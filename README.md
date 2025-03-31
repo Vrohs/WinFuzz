@@ -80,14 +80,14 @@ After installation, open a new PowerShell window and use the `wzf` command.
 ### Basic Usage:
 
 ```powershell
-# Search in current directory
+# Search across all drives (default behavior)
 wzf
+
+# Search only in current directory
+wzf -l
 
 # Search in a specific directory
 wzf -p C:\Users\YourName\Documents
-
-# Search across all drives (requires admin privileges)
-wzf -a
 
 # Limit search depth (default is 10)
 wzf -d 5
@@ -101,6 +101,8 @@ wzf -c
 # Set number of worker threads/processes
 wzf -w 8
 ```
+
+> **Note**: For best results when searching all drives, run PowerShell as administrator to ensure access to all directories.
 
 ## ⌨️ Keyboard Controls
 

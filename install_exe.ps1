@@ -155,9 +155,10 @@ Write-Host "You can now use the 'wzf' command in a new PowerShell window." -Fore
 Write-Host "(You must open a new PowerShell window for the changes to take effect)" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Usage examples:" -ForegroundColor Cyan
-Write-Host "  wzf                  - Search in current directory" -ForegroundColor White
+Write-Host "  wzf                  - Search across all drives (default)" -ForegroundColor White
+Write-Host "  wzf -l               - Search only in current directory" -ForegroundColor White
 Write-Host "  wzf -p C:\Users      - Search in specific directory" -ForegroundColor White
-Write-Host "  wzf -a               - Search all drives (admin only)" -ForegroundColor White
+Write-Host "  wzf -d 5             - Limit search depth to 5 levels" -ForegroundColor White
 Write-Host "  wzf -n               - Disable caching for fresh results" -ForegroundColor White
 Write-Host "  wzf -c               - Clear the cache before starting" -ForegroundColor White
 Write-Host "  wzf -w 8             - Set number of worker threads" -ForegroundColor White

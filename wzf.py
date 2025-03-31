@@ -499,8 +499,8 @@ def main():
     in_docker = os.path.exists('/.dockerenv')
 
     parser = argparse.ArgumentParser(description='WZF - Windows Fuzzy Finder')
-    parser.add_argument('-p', '--path', help='Path to search in (default: current directory or /data in Docker)')
-    parser.add_argument('-a', '--all-drives', action='store_true', help='Search all drives (requires admin privileges, not available in Docker)')
+    parser.add_argument('-p', '--path', help='Path to search in (default: all drives)')
+    parser.add_argument('-l', '--local', action='store_true', help='Search only in current directory instead of all drives')
     parser.add_argument('-d', '--max-depth', type=int, default=10, help='Maximum directory depth to search')
     parser.add_argument('-n', '--no-cache', action='store_true', help='Disable file index caching')
     parser.add_argument('-c', '--clear-cache', action='store_true', help='Clear the cache before starting')
@@ -511,12 +511,19 @@ def main():
     # Show version and exit if requested
     if args.version:
         print("WZF - Windows Fuzzy Finder v1.0.0")
-        print("Optimized for maximum performance with Docker support")
+        print("Optimized for maximum performance with system-wide search")
         sys.exit(0)
 
     # Set default path for Docker
     if in_docker and not args.path:
         args.path = '/data'
+
+    # Determine if we should search all drives (default behavior)
+    all_drives = True
+
+    # If path is specified or local flag is set, don't search all drives
+    if args.path or args.local:
+        all_drives = False
 
     # Clear cache if requested
     if args.clear_cache:
@@ -537,7 +544,15 @@ def main():
     if args.workers:
         wzf.worker_count = max(1, args.workers)
 
-    wzf.run(args.path, args.all_drives, not args.no_cache)
+    # If searching all drives, show a message
+    if all_drives:
+        print(f"{Fore.CYAN}Searching across all drives...{Style.RESET_ALL}")
+        if not wzf.is_admin():
+            print(f"{Fore.YELLOW}Note: For best results when searching all drives, run as administrator.{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}Some directories may not be accessible with current permissions.{Style.RESET_ALL}")
+            time.sleep(1)
+
+    wzf.run(args.path, all_drives, not args.no_cache)
 
 if __name__ == "__main__":
     main()
