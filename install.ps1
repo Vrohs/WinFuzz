@@ -80,5 +80,8 @@ Write-Host "Usage examples:" -ForegroundColor Cyan
 Write-Host "  wzf                  - Search in current directory" -ForegroundColor White
 Write-Host "  wzf -p C:\Users      - Search in specific directory" -ForegroundColor White
 Write-Host "  wzf -a               - Search all drives (admin only)" -ForegroundColor White
+Write-Host "  wzf -n               - Disable caching for fresh results" -ForegroundColor White
+Write-Host "  wzf -c               - Clear the cache before starting" -ForegroundColor White
+Write-Host "  wzf -w 8             - Set number of worker threads" -ForegroundColor White
 Write-Host "`nPress any key to exit..."
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
