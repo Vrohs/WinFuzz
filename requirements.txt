@@ -1,0 +1,4 @@
+colorama>=0.4.4
+keyboard>=0.13.5
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.12.2
