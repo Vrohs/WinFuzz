@@ -38,7 +38,7 @@ try {
 # Install required Python packages
 Write-Host "Installing required Python packages..." -ForegroundColor Cyan
 python -m pip install --upgrade pip
-python -m pip install colorama keyboard fuzzywuzzy python-Levenshtein
+python -m pip install colorama keyboard rapidfuzz pywin32 psutil
 
 # Copy the main script to the installation directory
 Write-Host "Copying files to installation directory..." -ForegroundColor Cyan
