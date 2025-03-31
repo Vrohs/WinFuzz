@@ -454,6 +454,16 @@ class WZF:
         """Run the fuzzy finder."""
         self.use_cache = use_cache
 
+        # Check if running in Docker
+        in_docker = os.path.exists('/.dockerenv')
+
+        if in_docker and all_drives:
+            print(f"{Fore.RED}Warning: Scanning all drives is not supported in Docker mode.{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}Please use the -p option to specify a directory within the mounted volume.{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}Example: wzf -p /data{Style.RESET_ALL}")
+            time.sleep(3)
+            return
+
         if all_drives and not self.is_admin():
             print(f"{Fore.RED}Warning: For full drive scanning, it's recommended to run as administrator.{Style.RESET_ALL}")
             print(f"{Fore.YELLOW}Some directories may not be accessible.{Style.RESET_ALL}")
@@ -485,14 +495,28 @@ class WZF:
         colorama.deinit()
 
 def main():
+    # Check if running in Docker
+    in_docker = os.path.exists('/.dockerenv')
+
     parser = argparse.ArgumentParser(description='WZF - Windows Fuzzy Finder')
-    parser.add_argument('-p', '--path', help='Path to search in (default: current directory)')
-    parser.add_argument('-a', '--all-drives', action='store_true', help='Search all drives (requires admin privileges)')
+    parser.add_argument('-p', '--path', help='Path to search in (default: current directory or /data in Docker)')
+    parser.add_argument('-a', '--all-drives', action='store_true', help='Search all drives (requires admin privileges, not available in Docker)')
     parser.add_argument('-d', '--max-depth', type=int, default=10, help='Maximum directory depth to search')
     parser.add_argument('-n', '--no-cache', action='store_true', help='Disable file index caching')
     parser.add_argument('-c', '--clear-cache', action='store_true', help='Clear the cache before starting')
     parser.add_argument('-w', '--workers', type=int, help='Number of worker threads/processes to use')
+    parser.add_argument('-v', '--version', action='store_true', help='Show version information')
     args = parser.parse_args()
+
+    # Show version and exit if requested
+    if args.version:
+        print("WZF - Windows Fuzzy Finder v1.0.0")
+        print("Optimized for maximum performance with Docker support")
+        sys.exit(0)
+
+    # Set default path for Docker
+    if in_docker and not args.path:
+        args.path = '/data'
 
     # Clear cache if requested
     if args.clear_cache:
